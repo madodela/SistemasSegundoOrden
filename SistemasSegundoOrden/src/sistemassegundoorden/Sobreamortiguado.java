@@ -3,7 +3,12 @@ package sistemassegundoorden;
 public class Sobreamortiguado {
 
     private double chi, wn, raiz_chi_cuad;
-
+/**
+ * 
+ * @param chi: Factor de amortiguamiento, su valor debe ser mayor a 1
+ * para entrar en este caso
+ * @param wn: es la frecuencia natural no amortiguada.
+ */
     public Sobreamortiguado(double chi, double wn) {
         this.chi = chi;
         this.wn = wn;
