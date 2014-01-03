@@ -5,6 +5,7 @@
  */
 package Views;
 
+import javax.swing.JOptionPane;
 import org.math.plot.*;
 import sistemassegundoorden.*;
 /*
@@ -21,7 +22,7 @@ public class Main_GUI extends javax.swing.JFrame {
     // private Plot2DPanel plot = new Plot2DPanel();
     private int systemType;
     private int tamVectorDatos;
-    private Plotting plot = new Plotting();
+    Plot2DPanel plot = new Plot2DPanel();
     
     public Main_GUI() {
         initComponents();
@@ -34,6 +35,9 @@ public class Main_GUI extends javax.swing.JFrame {
     public void plotResult() {
         int cont = 0;
         double t;
+        /*if (JOptionPane.showConfirmDialog(this,"¿Desea limpiar la gráfica para el nuevo resultado?\nEsto descartá resultados anteriores","Limpiar gráfica",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION){
+            plot.removeAllPlots();
+        }*/
         switch (systemType) {
             case 1:
                 //Sistema subamortiguado
@@ -44,12 +48,33 @@ public class Main_GUI extends javax.swing.JFrame {
                     y[cont] = sub_amor.ftct(t);
                     cont++;
                 }
-                plot.graficar(x, y);
-            /*plot.addLinePlot("my plot", x, y);
-             panelGrafica.add(plot);*/
-            //panelGrafica.setVisible(true);
-            //TODO: finsh plottinanelg
+                break;
+            case 2:
+                //Sistema criticamente amortiguado
+                AmortiguamientoCritico critico = new AmortiguamientoCritico(params.getWn());
+                for (t = 0; t < runSeconds; t = t + 0.1) {
+                    x[cont] = t;
+                    //System.out.println(sub_amor.ftct(t));
+                    y[cont] = critico.ftct(t);
+                    cont++;
+                }
+                break;
+            case 3:
+                //Sistema sobreamortiguado
+                Sobreamortiguado sobre = new Sobreamortiguado(params.getChi(),params.getWn());
+                for (t = 0; t < runSeconds; t = t + 0.1) {
+                    x[cont] = t;
+                    //System.out.println(sub_amor.ftct(t));
+                    y[cont] = sobre.ftct(t);
+                    cont++;
+                }
+                break;
+                
         }
+        // add a line plot to the PlotPanel
+        plot.addLinePlot("my plot", x, y);
+        plotFrame.setContentPane(plot);
+        plotFrame.setVisible(true);
     }
 
     /**
@@ -76,8 +101,8 @@ public class Main_GUI extends javax.swing.JFrame {
         textNumerador = new javax.swing.JTextField();
         textT2 = new javax.swing.JTextField();
         panelGraphics = new javax.swing.JPanel();
-        panelPlot = new javax.swing.JPanel();
-        panelGrafica = new javax.swing.JPanel();
+        plotFrame = new javax.swing.JInternalFrame();
+        btnClearPlots = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistemas de segundo orden");
@@ -123,26 +148,27 @@ public class Main_GUI extends javax.swing.JFrame {
         panelParamsLayout.setHorizontalGroup(
             panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelParamsLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(27, 27, 27)
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelType)
+                        .addGroup(panelParamsLayout.createSequentialGroup()
+                            .addGap(23, 23, 23)
+                            .addComponent(labelExample))
+                        .addGroup(panelParamsLayout.createSequentialGroup()
+                            .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGap(21, 21, 21)
+                            .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(textNumerador, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                                .addComponent(textT2, javax.swing.GroupLayout.Alignment.TRAILING))))
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addComponent(labelTime)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRun))
-                    .addComponent(labelType)
-                    .addGroup(panelParamsLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(labelExample))
-                    .addGroup(panelParamsLayout.createSequentialGroup()
-                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(21, 21, 21)
-                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(textNumerador, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                            .addComponent(textT2))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRun)))
                 .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addGap(55, 55, 55)
@@ -150,7 +176,7 @@ public class Main_GUI extends javax.swing.JFrame {
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         panelParamsLayout.setVerticalGroup(
             panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,61 +194,55 @@ public class Main_GUI extends javax.swing.JFrame {
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(textNumerador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(textT2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
+                        .addGap(46, 46, 46)
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelTime)
                             .addComponent(btnRun))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Parámetros", panelParams);
 
-        javax.swing.GroupLayout panelPlotLayout = new javax.swing.GroupLayout(panelPlot);
-        panelPlot.setLayout(panelPlotLayout);
-        panelPlotLayout.setHorizontalGroup(
-            panelPlotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        plotFrame.setVisible(true);
+
+        javax.swing.GroupLayout plotFrameLayout = new javax.swing.GroupLayout(plotFrame.getContentPane());
+        plotFrame.getContentPane().setLayout(plotFrameLayout);
+        plotFrameLayout.setHorizontalGroup(
+            plotFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelPlotLayout.setVerticalGroup(
-            panelPlotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 233, Short.MAX_VALUE)
+        plotFrameLayout.setVerticalGroup(
+            plotFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 223, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout panelGraficaLayout = new javax.swing.GroupLayout(panelGrafica);
-        panelGrafica.setLayout(panelGraficaLayout);
-        panelGraficaLayout.setHorizontalGroup(
-            panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 711, Short.MAX_VALUE)
-        );
-        panelGraficaLayout.setVerticalGroup(
-            panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        btnClearPlots.setText("Limpiar");
+        btnClearPlots.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearPlotsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelGraphicsLayout = new javax.swing.GroupLayout(panelGraphics);
         panelGraphics.setLayout(panelGraphicsLayout);
         panelGraphicsLayout.setHorizontalGroup(
             panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(plotFrame)
             .addGroup(panelGraphicsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btnClearPlots)
+                .addGap(0, 655, Short.MAX_VALUE))
         );
         panelGraphicsLayout.setVerticalGroup(
             panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelGraphicsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(plotFrame)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClearPlots))
         );
 
         jTabbedPane1.addTab("Gráficas", panelGraphics);
@@ -231,7 +251,7 @@ public class Main_GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
@@ -273,6 +293,10 @@ public class Main_GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRunActionPerformed
 
+    private void btnClearPlotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPlotsActionPerformed
+        plot.removeAllPlots();
+    }//GEN-LAST:event_btnClearPlotsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -309,6 +333,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearPlots;
     private javax.swing.JButton btnRun;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
@@ -317,10 +342,9 @@ public class Main_GUI extends javax.swing.JFrame {
     private javax.swing.JLabel labelResultados;
     private javax.swing.JLabel labelTime;
     private javax.swing.JLabel labelType;
-    private javax.swing.JPanel panelGrafica;
     private javax.swing.JPanel panelGraphics;
     private javax.swing.JPanel panelParams;
-    private javax.swing.JPanel panelPlot;
+    private javax.swing.JInternalFrame plotFrame;
     private javax.swing.JScrollPane scrollResultados;
     private javax.swing.JSpinner spinnerTime;
     private javax.swing.JTextField textNumerador;
