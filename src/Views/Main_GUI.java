@@ -5,7 +5,8 @@
  */
 
 package Views;
-import java.util.Timer;
+import org.math.plot.*;
+import sistemassegundoorden.*;
 /*
  *
  * @author loli,mario
@@ -13,14 +14,26 @@ import java.util.Timer;
 public class Main_GUI extends javax.swing.JFrame {
 
     private int runSeconds;
-    private Timer execute;
-    
+    private CapturaParametros params;
+    private double []x;
+    private double []y;
+    private Plot2DPanel plot = new Plot2DPanel();
+    private int systemType;
     
     public Main_GUI() {
         initComponents();
         runSeconds = 5;
-        execute = new Timer("doSystem",false);
-        
+        x = new double[101];
+        y = new double[101];
+    }
+    
+    public void plotResult(){
+        switch(systemType){
+            case 1:
+                //Sistema subamortiguado
+                Subamortiguado sub_amor = new Subamortiguado(params.getWn(),params.getChi());
+            //TODO: finsh plotting
+        }
     }
 
     /**
@@ -32,12 +45,8 @@ public class Main_GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        systemTypeGroup = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        radioCritico = new javax.swing.JRadioButton();
-        radioSobre = new javax.swing.JRadioButton();
-        radioSub = new javax.swing.JRadioButton();
+        panelParams = new javax.swing.JPanel();
         labelType = new javax.swing.JLabel();
         spinnerTime = new javax.swing.JSpinner();
         labelTime = new javax.swing.JLabel();
@@ -45,22 +54,21 @@ public class Main_GUI extends javax.swing.JFrame {
         scrollResultados = new javax.swing.JScrollPane();
         textResultados = new javax.swing.JTextArea();
         btnRun = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        labelExample = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        textNumerador = new javax.swing.JTextField();
+        textT1 = new javax.swing.JTextField();
+        textT2 = new javax.swing.JTextField();
+        panelGraphics = new javax.swing.JPanel();
+        panelPlot = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistemas de segundo orden");
         setAlwaysOnTop(true);
 
-        systemTypeGroup.add(radioCritico);
-        radioCritico.setText("Amortiguamiento Crítico");
-
-        systemTypeGroup.add(radioSobre);
-        radioSobre.setText("Sobreamortiguado");
-
-        systemTypeGroup.add(radioSub);
-        radioSub.setText("Subamortiguado");
-
-        labelType.setText("Seleccione el tipo de sistema");
+        labelType.setText("Coeficientes");
 
         spinnerTime.setName("spinnerTime"); // NOI18N
         spinnerTime.setValue(5);
@@ -85,76 +93,133 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(radioCritico)
-                        .addComponent(radioSub, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelTime)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnRun)
-                            .addComponent(radioSobre)))
-                    .addComponent(labelType))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelResultados)
-                    .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+        labelExample.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/example.png"))); // NOI18N
+
+        jLabel1.setText("Numerador:");
+
+        jLabel3.setText("Segundo grado:");
+
+        jLabel4.setText("Primer grado:");
+
+        textNumerador.setText("1.0");
+
+        textT1.setText("1.0");
+        textT1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textT1ActionPerformed(evt);
+            }
+        });
+
+        textT2.setText("1.0");
+
+        javax.swing.GroupLayout panelParamsLayout = new javax.swing.GroupLayout(panelParams);
+        panelParams.setLayout(panelParamsLayout);
+        panelParamsLayout.setHorizontalGroup(
+            panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelParamsLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelParamsLayout.createSequentialGroup()
+                        .addComponent(labelTime)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRun))
+                    .addComponent(labelType)
+                    .addGroup(panelParamsLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(labelExample))
+                    .addGroup(panelParamsLayout.createSequentialGroup()
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(9, 9, 9)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textNumerador, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                            .addComponent(textT1)
+                            .addComponent(textT2))))
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelParamsLayout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(labelResultados))
+                    .addGroup(panelParamsLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(labelResultados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelType)
-                        .addGap(18, 18, 18)
-                        .addComponent(radioCritico)
+        panelParamsLayout.setVerticalGroup(
+            panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelParamsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelParamsLayout.createSequentialGroup()
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelType)
+                            .addComponent(labelResultados))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelExample)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioSobre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioSub)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(textNumerador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(textT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(textT2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelTime))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRun)
-                        .addGap(0, 11, Short.MAX_VALUE))
-                    .addComponent(scrollResultados))
+                            .addComponent(labelTime)
+                            .addComponent(btnRun))))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Parámetros", panelParams);
+
+        javax.swing.GroupLayout panelPlotLayout = new javax.swing.GroupLayout(panelPlot);
+        panelPlot.setLayout(panelPlotLayout);
+        panelPlotLayout.setHorizontalGroup(
+            panelPlotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 712, Short.MAX_VALUE)
+        );
+        panelPlotLayout.setVerticalGroup(
+            panelPlotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 233, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelGraphicsLayout = new javax.swing.GroupLayout(panelGraphics);
+        panelGraphics.setLayout(panelGraphicsLayout);
+        panelGraphicsLayout.setHorizontalGroup(
+            panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelGraphicsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelGraphicsLayout.setVerticalGroup(
+            panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelGraphicsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Parámetros", jPanel1);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 701, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 248, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Gráficas", jPanel2);
+        jTabbedPane1.addTab("Gráficas", panelGraphics);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,9 +238,23 @@ public class Main_GUI extends javax.swing.JFrame {
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         //Obtenemos los segundos que se correrá
         this.runSeconds = (int)spinnerTime.getValue();
-        
-        
+        try{
+            params = new CapturaParametros(Double.parseDouble(textNumerador.getText()),Double.parseDouble(textT1.getText()),Double.parseDouble(textT2.getText()));
+            textResultados.setText( "Resultados:\n" + 
+                                    "Wd: " + params.getWd() + "\n" + 
+                                    "Wn: " + params.getWn() + "\n" + 
+                                    "Chi: " + params.getChi() + "\n" + 
+                                    "Sigma: " + params.getSigma() + "\n\n" +
+                                    "Por lo tanto se trata de un sistema " + params.getResult());
+            
+        }catch(Exception ex){
+            textResultados.setText("Error: " + ex.getLocalizedMessage());
+        }
     }//GEN-LAST:event_btnRunActionPerformed
+
+    private void textT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textT1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textT1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,18 +293,22 @@ public class Main_GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRun;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel labelExample;
     private javax.swing.JLabel labelResultados;
     private javax.swing.JLabel labelTime;
     private javax.swing.JLabel labelType;
-    private javax.swing.JRadioButton radioCritico;
-    private javax.swing.JRadioButton radioSobre;
-    private javax.swing.JRadioButton radioSub;
+    private javax.swing.JPanel panelGraphics;
+    private javax.swing.JPanel panelParams;
+    private javax.swing.JPanel panelPlot;
     private javax.swing.JScrollPane scrollResultados;
     private javax.swing.JSpinner spinnerTime;
-    private javax.swing.ButtonGroup systemTypeGroup;
+    private javax.swing.JTextField textNumerador;
     private javax.swing.JTextArea textResultados;
+    private javax.swing.JTextField textT1;
+    private javax.swing.JTextField textT2;
     // End of variables declaration//GEN-END:variables
 }

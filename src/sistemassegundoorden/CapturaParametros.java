@@ -5,11 +5,29 @@ import java.util.Scanner;
 public class CapturaParametros {
 
     private double t1, t2, num, wn, wd, sigma, chi;
+    private int type;
 
-    public CapturaParametros() {
-        capturarCoeficientes();
+    public CapturaParametros(double num,double t1,double t2) {
+        this.num = num;
+        this.t1 = t1;
+        this.t2 = t2;
         calcularParametros();
-        imprimirParametros();
+    }
+    
+    public double getWn(){
+        return this.wn;
+    }
+    
+    public double getWd(){
+        return this.wd;
+    }
+    
+    public double getChi(){
+        return this.chi;
+    }
+    
+    public double getSigma(){
+        return this.sigma;
     }
 
     private void capturarCoeficientes() {
@@ -31,20 +49,25 @@ public class CapturaParametros {
         sigma = chi * wn;
     }
 
-    private void imprimirParametros() {
-        System.out.println("---------------RESULTADOS----------------");
+    public String getResult() {
+        /*System.out.println("---------------RESULTADOS----------------");
         System.out.println("Wn = " + wn + "\n wd = "
-                + wd + "\nchi = " + chi + "\nsigma = " + sigma);
+                + wd + "\nchi = " + chi + "\nsigma = " + sigma);*/
         if (chi > 0 && chi < 1) {
-            System.out.println("Sistema subamortiguado");
+            type = 1;
+            return "Sistema subamortiguado";
         } else if (chi == 1) {
-            System.out.println("criticamente amortiguado");
+            type = 2;
+            return "Sistema críticamente amortiguado";
         } else if (chi > 1) {
-            System.out.println("sobreamortiguado");
+            type = 3;
+            return "Sistema sobre-amortiguado";
         }
+        type = 0;
+        return "";
     }
-
-    public static void main(String[] args) {
-        CapturaParametros ini = new CapturaParametros();
+    
+    public int getType(){
+        return type;
     }
 }
