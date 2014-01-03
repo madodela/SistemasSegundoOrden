@@ -3,36 +3,52 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Views;
+
 import org.math.plot.*;
 import sistemassegundoorden.*;
 /*
  *
  * @author loli,mario
  */
-public class Main_GUI extends javax.swing.JFrame {
 
+public class Main_GUI extends javax.swing.JFrame {
+    
     private int runSeconds;
     private CapturaParametros params;
-    private double []x;
-    private double []y;
-    private Plot2DPanel plot = new Plot2DPanel();
+    private double[] x;
+    private double[] y;
+    // private Plot2DPanel plot = new Plot2DPanel();
     private int systemType;
+    private int tamVectorDatos;
+    private Plotting plot = new Plotting();
     
     public Main_GUI() {
         initComponents();
         runSeconds = 5;
-        x = new double[101];
-        y = new double[101];
+        tamVectorDatos = 51;
+        x = new double[tamVectorDatos];
+        y = new double[tamVectorDatos];
     }
     
-    public void plotResult(){
-        switch(systemType){
+    public void plotResult() {
+        int cont = 0;
+        double t;
+        switch (systemType) {
             case 1:
                 //Sistema subamortiguado
-                Subamortiguado sub_amor = new Subamortiguado(params.getWn(),params.getChi());
-            //TODO: finsh plotting
+                Subamortiguado sub_amor = new Subamortiguado(params.getWn(), params.getChi());
+                for (t = 0; t < runSeconds; t = t + 0.1) {
+                    x[cont] = t;
+                    //System.out.println(sub_amor.ftct(t));
+                    y[cont] = sub_amor.ftct(t);
+                    cont++;
+                }
+                plot.graficar(x, y);
+            /*plot.addLinePlot("my plot", x, y);
+             panelGrafica.add(plot);*/
+            //panelGrafica.setVisible(true);
+            //TODO: finsh plottinanelg
         }
     }
 
@@ -56,13 +72,12 @@ public class Main_GUI extends javax.swing.JFrame {
         btnRun = new javax.swing.JButton();
         labelExample = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         textNumerador = new javax.swing.JTextField();
-        textT1 = new javax.swing.JTextField();
         textT2 = new javax.swing.JTextField();
         panelGraphics = new javax.swing.JPanel();
         panelPlot = new javax.swing.JPanel();
+        panelGrafica = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistemas de segundo orden");
@@ -97,18 +112,9 @@ public class Main_GUI extends javax.swing.JFrame {
 
         jLabel1.setText("Numerador:");
 
-        jLabel3.setText("Segundo grado:");
-
         jLabel4.setText("Primer grado:");
 
         textNumerador.setText("1.0");
-
-        textT1.setText("1.0");
-        textT1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textT1ActionPerformed(evt);
-            }
-        });
 
         textT2.setText("1.0");
 
@@ -122,7 +128,7 @@ public class Main_GUI extends javax.swing.JFrame {
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addComponent(labelTime)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRun))
                     .addComponent(labelType)
@@ -132,12 +138,10 @@ public class Main_GUI extends javax.swing.JFrame {
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(9, 9, 9)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(21, 21, 21)
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(textNumerador, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                            .addComponent(textT1)
                             .addComponent(textT2))))
                 .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelParamsLayout.createSequentialGroup()
@@ -164,11 +168,7 @@ public class Main_GUI extends javax.swing.JFrame {
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(textNumerador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(textT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(32, 32, 32)
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(textT2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -186,11 +186,22 @@ public class Main_GUI extends javax.swing.JFrame {
         panelPlot.setLayout(panelPlotLayout);
         panelPlotLayout.setHorizontalGroup(
             panelPlotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 712, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelPlotLayout.setVerticalGroup(
             panelPlotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 233, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelGraficaLayout = new javax.swing.GroupLayout(panelGrafica);
+        panelGrafica.setLayout(panelGraficaLayout);
+        panelGraficaLayout.setHorizontalGroup(
+            panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 711, Short.MAX_VALUE)
+        );
+        panelGraficaLayout.setVerticalGroup(
+            panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout panelGraphicsLayout = new javax.swing.GroupLayout(panelGraphics);
@@ -199,6 +210,8 @@ public class Main_GUI extends javax.swing.JFrame {
             panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelGraphicsLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -206,7 +219,9 @@ public class Main_GUI extends javax.swing.JFrame {
             panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelGraphicsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelPlot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -230,31 +245,33 @@ public class Main_GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void spinnerTimeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerTimeStateChanged
-        if((int)spinnerTime.getValue() < 1 )
+        if ((int) spinnerTime.getValue() < 1) {
             spinnerTime.setValue(1);
-        
+        }
+
     }//GEN-LAST:event_spinnerTimeStateChanged
 
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         //Obtenemos los segundos que se correrá
-        this.runSeconds = (int)spinnerTime.getValue();
-        try{
-            params = new CapturaParametros(Double.parseDouble(textNumerador.getText()),Double.parseDouble(textT1.getText()),Double.parseDouble(textT2.getText()));
-            textResultados.setText( "Resultados:\n" + 
-                                    "Wd: " + params.getWd() + "\n" + 
-                                    "Wn: " + params.getWn() + "\n" + 
-                                    "Chi: " + params.getChi() + "\n" + 
-                                    "Sigma: " + params.getSigma() + "\n\n" +
-                                    "Por lo tanto se trata de un sistema " + params.getResult());
+        this.runSeconds = (int) spinnerTime.getValue();
+        tamVectorDatos = (int) (runSeconds / 0.1 + 1); //datos a guardar para graficar
+        x = new double[tamVectorDatos];
+        y = new double[tamVectorDatos];
+        try {
+            params = new CapturaParametros(Double.parseDouble(textNumerador.getText()), 1, Double.parseDouble(textT2.getText()));
+            textResultados.setText("Resultados:\n"
+                    + "Wd: " + params.getWd() + "\n"
+                    + "Wn: " + params.getWn() + "\n"
+                    + "Chi: " + params.getChi() + "\n"
+                    + "Sigma: " + params.getSigma() + "\n\n"
+                    + "Por lo tanto se trata de un " + params.getResult());
+            systemType = params.getType();
+            plotResult();
             
-        }catch(Exception ex){
+        } catch (Exception ex) {
             textResultados.setText("Error: " + ex.getLocalizedMessage());
         }
     }//GEN-LAST:event_btnRunActionPerformed
-
-    private void textT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textT1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textT1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,13 +311,13 @@ public class Main_GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRun;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelExample;
     private javax.swing.JLabel labelResultados;
     private javax.swing.JLabel labelTime;
     private javax.swing.JLabel labelType;
+    private javax.swing.JPanel panelGrafica;
     private javax.swing.JPanel panelGraphics;
     private javax.swing.JPanel panelParams;
     private javax.swing.JPanel panelPlot;
@@ -308,7 +325,6 @@ public class Main_GUI extends javax.swing.JFrame {
     private javax.swing.JSpinner spinnerTime;
     private javax.swing.JTextField textNumerador;
     private javax.swing.JTextArea textResultados;
-    private javax.swing.JTextField textT1;
     private javax.swing.JTextField textT2;
     // End of variables declaration//GEN-END:variables
 }
