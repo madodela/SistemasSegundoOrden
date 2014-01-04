@@ -1,43 +1,31 @@
 package sistemassegundoorden;
 
-import java.util.Scanner;
-
 public class CapturaParametros {
 
-    private double t1, t2, num, wn, wd, sigma, chi;
+    private double wn, wd, sigma, chi;
+    private final double t2, num;
     private int type;
 
-    public CapturaParametros(double num,double t1,double t2) {
+    public CapturaParametros(double num, double t2) {
         this.num = num;
-        this.t1 = t1;
         this.t2 = t2;
         calcularParametros();
     }
-    
-    public double getWn(){
+
+    public double getWn() {
         return this.wn;
     }
-    
-    public double getWd(){
+
+    public double getWd() {
         return this.wd;
     }
-    
-    public double getChi(){
+
+    public double getChi() {
         return this.chi;
     }
-    
-    public double getSigma(){
-        return this.sigma;
-    }
 
-    private void capturarCoeficientes() {
-        Scanner cin = new Scanner(System.in);
-        System.out.print("Numerador: ");
-        num = cin.nextDouble();
-        System.out.print("Coeficiente de término de segundo grado: ");
-        t1 = cin.nextDouble();
-        System.out.print("Coeficiente de término de primer grado: ");
-        t2 = cin.nextDouble();
+    public double getSigma() {
+        return this.sigma;
     }
 
     private void calcularParametros() {
@@ -50,9 +38,6 @@ public class CapturaParametros {
     }
 
     public String getResult() {
-        /*System.out.println("---------------RESULTADOS----------------");
-        System.out.println("Wn = " + wn + "\n wd = "
-                + wd + "\nchi = " + chi + "\nsigma = " + sigma);*/
         if (chi > 0 && chi < 1) {
             type = 1;
             return "Sistema subamortiguado";
@@ -66,8 +51,8 @@ public class CapturaParametros {
         type = 0;
         return "";
     }
-    
-    public int getType(){
+
+    public int getType() {
         return type;
     }
 }

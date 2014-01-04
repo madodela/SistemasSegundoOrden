@@ -1,20 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Views;
 
-import javax.swing.JOptionPane;
 import org.math.plot.*;
 import sistemassegundoorden.*;
 /*
- *
  * @author loli,mario
  */
 
 public class Main_GUI extends javax.swing.JFrame {
-    
+
     private int runSeconds;
     private CapturaParametros params;
     private double[] x;
@@ -23,21 +16,25 @@ public class Main_GUI extends javax.swing.JFrame {
     private int systemType;
     private int tamVectorDatos;
     Plot2DPanel plot = new Plot2DPanel();
-    
+
     public Main_GUI() {
         initComponents();
         runSeconds = 5;
         tamVectorDatos = 51;
+        createVector();
+    }
+
+    private void createVector() {
         x = new double[tamVectorDatos];
         y = new double[tamVectorDatos];
     }
-    
+
     public void plotResult() {
         int cont = 0;
         double t;
         /*if (JOptionPane.showConfirmDialog(this,"¿Desea limpiar la gráfica para el nuevo resultado?\nEsto descartá resultados anteriores","Limpiar gráfica",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION){
-            plot.removeAllPlots();
-        }*/
+         plot.removeAllPlots();
+         }*/
         switch (systemType) {
             case 1:
                 //Sistema subamortiguado
@@ -61,7 +58,7 @@ public class Main_GUI extends javax.swing.JFrame {
                 break;
             case 3:
                 //Sistema sobreamortiguado
-                Sobreamortiguado sobre = new Sobreamortiguado(params.getChi(),params.getWn());
+                Sobreamortiguado sobre = new Sobreamortiguado(params.getChi(), params.getWn());
                 for (t = 0; t < runSeconds; t = t + 0.1) {
                     x[cont] = t;
                     //System.out.println(sub_amor.ftct(t));
@@ -69,7 +66,7 @@ public class Main_GUI extends javax.swing.JFrame {
                     cont++;
                 }
                 break;
-                
+
         }
         // add a line plot to the PlotPanel
         plot.addLinePlot("my plot", x, y);
@@ -268,17 +265,15 @@ public class Main_GUI extends javax.swing.JFrame {
         if ((int) spinnerTime.getValue() < 1) {
             spinnerTime.setValue(1);
         }
-
     }//GEN-LAST:event_spinnerTimeStateChanged
 
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         //Obtenemos los segundos que se correrá
         this.runSeconds = (int) spinnerTime.getValue();
         tamVectorDatos = (int) (runSeconds / 0.1 + 1); //datos a guardar para graficar
-        x = new double[tamVectorDatos];
-        y = new double[tamVectorDatos];
+        createVector();
         try {
-            params = new CapturaParametros(Double.parseDouble(textNumerador.getText()), 1, Double.parseDouble(textT2.getText()));
+            params = new CapturaParametros(Double.parseDouble(textNumerador.getText()), Double.parseDouble(textT2.getText()));
             textResultados.setText("Resultados:\n"
                     + "Wd: " + params.getWd() + "\n"
                     + "Wn: " + params.getWn() + "\n"
@@ -287,7 +282,6 @@ public class Main_GUI extends javax.swing.JFrame {
                     + "Por lo tanto se trata de un " + params.getResult());
             systemType = params.getType();
             plotResult();
-            
         } catch (Exception ex) {
             textResultados.setText("Error: " + ex.getLocalizedMessage());
         }
