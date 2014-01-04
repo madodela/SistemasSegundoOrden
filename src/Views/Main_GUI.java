@@ -9,7 +9,8 @@ import sistemassegundoorden.*;
 public class Main_GUI extends javax.swing.JFrame {
 
     private int runSeconds;
-    private CapturaParametros params;
+    private CalculoParametros param_calc;
+    private Parametros parametros;
     private double[] x;
     private double[] y;
     // private Plot2DPanel plot = new Plot2DPanel();
@@ -38,7 +39,7 @@ public class Main_GUI extends javax.swing.JFrame {
         switch (systemType) {
             case 1:
                 //Sistema subamortiguado
-                Subamortiguado sub_amor = new Subamortiguado(params.getWn(), params.getChi());
+                Subamortiguado sub_amor = new Subamortiguado(parametros.getWn(), parametros.getChi());
                 for (t = 0; t < runSeconds; t = t + 0.1) {
                     x[cont] = t;
                     //System.out.println(sub_amor.ftct(t));
@@ -48,7 +49,7 @@ public class Main_GUI extends javax.swing.JFrame {
                 break;
             case 2:
                 //Sistema criticamente amortiguado
-                AmortiguamientoCritico critico = new AmortiguamientoCritico(params.getWn());
+                AmortiguamientoCritico critico = new AmortiguamientoCritico(parametros.getWn());
                 for (t = 0; t < runSeconds; t = t + 0.1) {
                     x[cont] = t;
                     //System.out.println(sub_amor.ftct(t));
@@ -58,7 +59,7 @@ public class Main_GUI extends javax.swing.JFrame {
                 break;
             case 3:
                 //Sistema sobreamortiguado
-                Sobreamortiguado sobre = new Sobreamortiguado(params.getChi(), params.getWn());
+                Sobreamortiguado sobre = new Sobreamortiguado(parametros.getChi(), parametros.getWn());
                 for (t = 0; t < runSeconds; t = t + 0.1) {
                     x[cont] = t;
                     //System.out.println(sub_amor.ftct(t));
@@ -273,14 +274,15 @@ public class Main_GUI extends javax.swing.JFrame {
         tamVectorDatos = (int) (runSeconds / 0.1 + 1); //datos a guardar para graficar
         createVector();
         try {
-            params = new CapturaParametros(Double.parseDouble(textNumerador.getText()), Double.parseDouble(textT2.getText()));
+            parametros = new Parametros(Double.parseDouble(textNumerador.getText()), Double.parseDouble(textT2.getText()));
+            param_calc = new CalculoParametros(parametros);
             textResultados.setText("Resultados:\n"
-                    + "Wd: " + params.getWd() + "\n"
-                    + "Wn: " + params.getWn() + "\n"
-                    + "Chi: " + params.getChi() + "\n"
-                    + "Sigma: " + params.getSigma() + "\n\n"
-                    + "Por lo tanto se trata de un " + params.getResult());
-            systemType = params.getType();
+                    + "Wd: " + parametros.getWd() + "\n"
+                    + "Wn: " + parametros.getWn() + "\n"
+                    + "Chi: " + parametros.getChi() + "\n"
+                    + "Sigma: " + parametros.getSigma() + "\n\n"
+                    + "Por lo tanto se trata de un " + param_calc.getResult());
+            systemType = param_calc.getType();
             plotResult();
         } catch (Exception ex) {
             textResultados.setText("Error: " + ex.getLocalizedMessage());

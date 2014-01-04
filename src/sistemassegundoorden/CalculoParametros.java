@@ -1,40 +1,23 @@
 package sistemassegundoorden;
 
-public class CapturaParametros {
+public class CalculoParametros {
 
-    private double wn, wd, sigma, chi;
-    private final double t2, num;
+    Parametros param;
+    private double chi;
     private int type;
 
-    public CapturaParametros(double num, double t2) {
-        this.num = num;
-        this.t2 = t2;
+    public CalculoParametros( Parametros param) {
+        this.param = param;
         calcularParametros();
     }
 
-    public double getWn() {
-        return this.wn;
-    }
-
-    public double getWd() {
-        return this.wd;
-    }
-
-    public double getChi() {
-        return this.chi;
-    }
-
-    public double getSigma() {
-        return this.sigma;
-    }
-
     private void calcularParametros() {
-        wn = Math.sqrt(num);
-        chi = t2 / (2 * wn);
+        chi = param.getT2() / (2 * param.getWn());
+        param.setChi(chi);
         if (chi > 0 && chi < 1) {
-            wd = wn * Math.sqrt(1 - chi * chi);
+            param.setWd(param.getWn() * Math.sqrt(1 - chi * chi));
         }
-        sigma = chi * wn;
+        param.setSigma(chi * param.getWn());
     }
 
     public String getResult() {
