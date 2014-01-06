@@ -2,7 +2,7 @@ package sistemassegundoorden;
 
 public class Parametros {
 
-    private double wn, wd, sigma, chi;
+    private double wn, wd, sigma, zeta;
     private double t2, num;
 
     public Parametros() {
@@ -36,11 +36,11 @@ public class Parametros {
     }
 
     public double getChi() {
-        return chi;
+        return zeta;
     }
 
     public void setChi(double chi) {
-        this.chi = chi;
+        this.zeta = chi;
     }
 
     public double getT2() {

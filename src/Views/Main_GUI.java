@@ -120,6 +120,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         labelResultados.setText("Resultados");
 
+        textResultados.setEditable(false);
         textResultados.setColumns(20);
         textResultados.setRows(5);
         scrollResultados.setViewportView(textResultados);
@@ -147,26 +148,29 @@ public class Main_GUI extends javax.swing.JFrame {
             panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelParamsLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelType)
-                        .addGroup(panelParamsLayout.createSequentialGroup()
-                            .addGap(23, 23, 23)
-                            .addComponent(labelExample))
-                        .addGroup(panelParamsLayout.createSequentialGroup()
-                            .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addGap(21, 21, 21)
-                            .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(textNumerador, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                                .addComponent(textT2, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelType)
                     .addGroup(panelParamsLayout.createSequentialGroup()
-                        .addComponent(labelTime)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRun)))
+                        .addGap(23, 23, 23)
+                        .addComponent(labelExample))
+                    .addGroup(panelParamsLayout.createSequentialGroup()
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel1)
+                            .addComponent(labelTime))
+                        .addGap(21, 21, 21)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelParamsLayout.createSequentialGroup()
+                                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(textNumerador, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                                    .addComponent(textT2, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(panelParamsLayout.createSequentialGroup()
+                                .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelParamsLayout.createSequentialGroup()
+                        .addComponent(btnRun)
+                        .addGap(129, 129, 129)))
                 .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addGap(55, 55, 55)
@@ -174,19 +178,18 @@ public class Main_GUI extends javax.swing.JFrame {
                     .addGroup(panelParamsLayout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelParamsLayout.setVerticalGroup(
             panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelParamsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelParamsLayout.createSequentialGroup()
-                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelType)
-                            .addComponent(labelResultados))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelType)
+                    .addComponent(labelResultados))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelParamsLayout.createSequentialGroup()
                         .addComponent(labelExample)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -196,12 +199,14 @@ public class Main_GUI extends javax.swing.JFrame {
                         .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(textT2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(46, 46, 46)
-                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addGroup(panelParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelTime)
-                            .addComponent(btnRun))))
-                .addContainerGap(46, Short.MAX_VALUE))
+                            .addComponent(spinnerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addComponent(btnRun))
+                    .addComponent(scrollResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Parámetros", panelParams);
@@ -216,7 +221,7 @@ public class Main_GUI extends javax.swing.JFrame {
         );
         plotFrameLayout.setVerticalGroup(
             plotFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 223, Short.MAX_VALUE)
+            .addGap(0, 231, Short.MAX_VALUE)
         );
 
         btnClearPlots.setText("Limpiar");
@@ -233,7 +238,7 @@ public class Main_GUI extends javax.swing.JFrame {
             .addComponent(plotFrame)
             .addGroup(panelGraphicsLayout.createSequentialGroup()
                 .addComponent(btnClearPlots)
-                .addGap(0, 655, Short.MAX_VALUE))
+                .addGap(0, 677, Short.MAX_VALUE))
         );
         panelGraphicsLayout.setVerticalGroup(
             panelGraphicsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,7 +261,7 @@ public class Main_GUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
         );
 
         pack();
@@ -276,11 +281,11 @@ public class Main_GUI extends javax.swing.JFrame {
         try {
             parametros = new Parametros(Double.parseDouble(textNumerador.getText()), Double.parseDouble(textT2.getText()));
             param_calc = new CalculoParametros(parametros);
-            textResultados.setText("Resultados:\n"
-                    + "Wd: " + parametros.getWd() + "\n"
-                    + "Wn: " + parametros.getWn() + "\n"
-                    + "Chi: " + parametros.getChi() + "\n"
-                    + "Sigma: " + parametros.getSigma() + "\n\n"
+            textResultados.setText(
+                      "Frecuencia natural amortiguada (Wd): " + parametros.getWd() + "\n"
+                    + "Frecuencia natural no amortiguada (Wn): " + parametros.getWn() + "\n"
+                    + "Factor de amortiguamiento (Zeta): " + parametros.getChi() + "\n"
+                    + "Atenuación (Sigma): " + parametros.getSigma() + "\n\n"
                     + "Por lo tanto se trata de un " + param_calc.getResult());
             systemType = param_calc.getType();
             plotResult();

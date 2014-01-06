@@ -3,7 +3,7 @@ package sistemassegundoorden;
 public class CalculoParametros {
 
     Parametros param;
-    private double chi;
+    private double zeta;
     private int type;
 
     public CalculoParametros( Parametros param) {
@@ -12,22 +12,22 @@ public class CalculoParametros {
     }
 
     private void calcularParametros() {
-        chi = param.getT2() / (2 * param.getWn());
-        param.setChi(chi);
-        if (chi > 0 && chi < 1) {
-            param.setWd(param.getWn() * Math.sqrt(1 - chi * chi));
+        zeta = param.getT2() / (2 * param.getWn());
+        param.setChi(zeta);
+        if (zeta > 0 && zeta < 1) {
+            param.setWd(param.getWn() * Math.sqrt(1 - zeta * zeta));
         }
-        param.setSigma(chi * param.getWn());
+        param.setSigma(zeta * param.getWn());
     }
 
     public String getResult() {
-        if (chi > 0 && chi < 1) {
+        if (zeta > 0 && zeta < 1) {
             type = 1;
             return "Sistema subamortiguado";
-        } else if (chi == 1) {
+        } else if (zeta == 1) {
             type = 2;
             return "Sistema críticamente amortiguado";
-        } else if (chi > 1) {
+        } else if (zeta > 1) {
             type = 3;
             return "Sistema sobre-amortiguado";
         }

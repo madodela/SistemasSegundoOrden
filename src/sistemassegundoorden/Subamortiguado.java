@@ -1,17 +1,17 @@
 package sistemassegundoorden;
 
 public class Subamortiguado {
-//(0 < chi < 1)
+//(0 < zeta < 1)
 
-    private double wn, chi, wd;
+    private double wn, zeta, wd;
 /**
  * @param wn: es la frecuencia natural no amortiguada.
  * @param chi: Factor de amortiguamiento, su valor debe estar entre 0 y 1.
  */
     public Subamortiguado(double wn, double chi) {
         this.wn = wn;
-       // chi = Math.random();
-        this.chi = chi;
+       // zeta = Math.random();
+        this.zeta = chi;
         wd = wn * Math.sqrt(1 - chi * chi);
     }
 /**
@@ -21,7 +21,7 @@ public class Subamortiguado {
     public double ftCs(int s) {
         double num, den;
         num = wn * wn;
-        den = s * (s * s + 2 * chi * wn * s + wn * wn);
+        den = s * (s * s + 2 * zeta * wn * s + wn * wn);
         return num / den;
     }
 /**
@@ -31,8 +31,8 @@ public class Subamortiguado {
  */
     public double ftct(double t) {
         double ct1, ct2;
-        ct1 = (Math.exp(-chi * wn * t) / Math.sqrt(1 - chi * chi));
-        ct2 = wd * t +(1/Math.tan(Math.sqrt(1 - chi * chi) / chi)) ;
+        ct1 = (Math.exp(-zeta * wn * t) / Math.sqrt(1 - zeta * zeta));
+        ct2 = wd * t +(1/Math.tan(Math.sqrt(1 - zeta * zeta) / zeta)) ;
         return 1 - ct1 * Math.sin(ct2);
     }
 }
